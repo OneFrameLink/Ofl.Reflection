@@ -7,6 +7,21 @@ namespace Ofl.Reflection
 {
     public static class TypeExtensions
     {
+        public static IEnumerable<PropertyInfo> GetPropertiesWithPublicInstanceSetters<T>() =>
+            typeof(T).GetPropertiesWithPublicInstanceSetters();
+
+        public static IEnumerable<PropertyInfo> GetPropertiesWithPublicInstanceSetters(this Type type)
+        {
+            // Validate parameters.
+            if (type == null) throw new ArgumentNullException(nameof(type));
+
+            // Get the properties.
+            return type.GetRuntimeProperties().Where(p => !p.GetMethod.IsStatic && p.SetMethod.IsPublic);
+        }
+
+        public static IEnumerable<PropertyInfo> GetPropertiesWithPublicInstanceGetters<T>() =>
+            typeof(T).GetPropertiesWithPublicInstanceGetters();
+
         public static IEnumerable<PropertyInfo> GetPropertiesWithPublicInstanceGetters(this Type type)
         {
             // Validate parameters.
@@ -18,8 +33,6 @@ namespace Ofl.Reflection
             return type.GetRuntimeProperties().Where(p => !p.GetMethod.IsStatic && p.GetMethod.IsPublic);
         }
 
-        public static IEnumerable<PropertyInfo> GetPropertiesWithPublicInstanceGetters<T>() =>
-            typeof(T).GetPropertiesWithPublicInstanceGetters();
 
         public static bool IsAssignableFrom(this Type to, Type from)
         {
