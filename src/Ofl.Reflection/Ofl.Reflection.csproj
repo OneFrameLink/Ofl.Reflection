@@ -6,7 +6,7 @@
     <PackageId>Ofl.Reflection</PackageId>
     <PackageProjectUrl>https://github.com/OneFrameLink/Ofl.Reflection</PackageProjectUrl>
     <RepositoryUrl>https://github.com/OneFrameLink/Ofl.Reflection.git</RepositoryUrl>
-    <Version>1.2.0</Version>
+    <Version>1.3.0</Version>
     <PackageTags>reflection</PackageTags>
   </PropertyGroup>
 </Project>
