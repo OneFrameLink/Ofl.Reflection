@@ -16,7 +16,7 @@ namespace Ofl.Reflection
             if (type == null) throw new ArgumentNullException(nameof(type));
 
             // Get the properties.
-            return type.GetRuntimeProperties().Where(p => !p.GetMethod.IsStatic && p.SetMethod.IsPublic);
+            return type.GetRuntimeProperties().Where(p => p.SetMethod != null && !p.SetMethod.IsStatic && p.SetMethod.IsPublic);
         }
 
         public static IEnumerable<PropertyInfo> GetPropertiesWithPublicInstanceGetters<T>() =>
@@ -30,7 +30,7 @@ namespace Ofl.Reflection
             // Get the properties.
             // NOTE: Used to be
             //return type.GetTypeInfo().GetProperties(BindingFlags.Instance | BindingFlags.Public).
-            return type.GetRuntimeProperties().Where(p => !p.GetMethod.IsStatic && p.GetMethod.IsPublic);
+            return type.GetRuntimeProperties().Where(p => p.GetMethod != null && !p.GetMethod.IsStatic && p.GetMethod.IsPublic);
         }
 
 
