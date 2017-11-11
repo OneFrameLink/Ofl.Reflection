@@ -9,11 +9,11 @@ namespace Ofl.Reflection.Tests
     {
         private class Test
         {
-            internal object StaticInternalReadOnly { get; }
-            internal object StaticInternalWriteOnly { set { } }
+            internal static object StaticInternalReadOnly { get; }
+            internal static object StaticInternalWriteOnly { set { } }
 
-            private object StaticPrivateReadOnly { get; }
-            private object StaticPrivateWriteOnly { set { } }
+            private static object StaticPrivateReadOnly { get; }
+            private static object StaticPrivateWriteOnly { set { } }
 
             internal object InternalReadOnly { get; }
             internal object InternalWriteOnly { set { } }
@@ -26,6 +26,12 @@ namespace Ofl.Reflection.Tests
 
             public object ReadOnly { get; }
             public object WriteOnly { set { }}
+        }
+
+        private class DerivedTest : Test
+        {
+            public object ExtendedReadOnly { get; }
+            public object ExtendedWriteOnly { set { } }
         }
 
         [Fact]
@@ -52,6 +58,32 @@ namespace Ofl.Reflection.Tests
 
             // Same as read only.
             Assert.Equal(typeof(Test).GetProperty(nameof(Test.WriteOnly)), property);
+        }
+
+        [Fact]
+        public void Test_GetAllPropertiesWithPublicInstanceGetters()
+        {
+            // Get the gettable properties.
+            IReadOnlyCollection<PropertyInfo> properties = typeof(DerivedTest).GetPropertiesWithPublicInstanceGetters().
+                ToList();
+
+            // Make sure only two properties.
+            Assert.Equal(2, properties.Count);
+            Assert.Equal(typeof(DerivedTest).GetProperty(nameof(DerivedTest.ReadOnly)), properties.Single(p => p.Name == nameof(DerivedTest.ReadOnly)));
+            Assert.Equal(typeof(DerivedTest).GetProperty(nameof(DerivedTest.ExtendedReadOnly)), properties.Single(p => p.Name == nameof(DerivedTest.ExtendedReadOnly)));
+        }
+
+        [Fact]
+        public void Test_GetAllPropertiesWithPublicInstanceSetters()
+        {
+            // Get the gettable properties.
+            IReadOnlyCollection<PropertyInfo> properties = typeof(DerivedTest).GetPropertiesWithPublicInstanceSetters().
+                ToList();
+
+            // Make sure only two properties.
+            Assert.Equal(2, properties.Count);
+            Assert.Equal(typeof(DerivedTest).GetProperty(nameof(DerivedTest.WriteOnly)), properties.Single(p => p.Name == nameof(DerivedTest.WriteOnly)));
+            Assert.Equal(typeof(DerivedTest).GetProperty(nameof(DerivedTest.ExtendedWriteOnly)), properties.Single(p => p.Name == nameof(DerivedTest.ExtendedWriteOnly)));
         }
     }
 }
