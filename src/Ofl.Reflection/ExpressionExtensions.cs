@@ -8,7 +8,7 @@ namespace Ofl.Reflection
 {
     public static class ExpressionExtensions
     {
-        public static PropertyInfo GetPropertyInfo<T>(this Expression<Func<T, object>> expression)
+        public static PropertyInfo GetPropertyInfo<T, TProperty>(this Expression<Func<T, TProperty>> expression)
         {
             // Validate parameters.
             if (expression == null) throw new ArgumentNullException(nameof(expression));
@@ -30,17 +30,15 @@ namespace Ofl.Reflection
                 throw CreateExpressionNotPropertyException();
 
             // Get the property info.
-            var propertyInfo = member.Member as PropertyInfo;
-
             // If it is null, throw an exception.
-            if (propertyInfo == null)
+            if (!(member.Member is PropertyInfo propertyInfo))
                 throw CreateExpressionNotPropertyException();
 
             // Return the property info.
             return propertyInfo;
         }
 
-        public static PropertyInfo GetPropertyInfo<T>(this T source, Expression<Func<T, object>> expression) =>
+        public static PropertyInfo GetPropertyInfo<T, TProperty>(this T source, Expression<Func<T, TProperty>> expression) =>
             expression.GetPropertyInfo();
 
         public static IEnumerable<PropertyInfo> GetPropertyInfos<T>(this T source,
