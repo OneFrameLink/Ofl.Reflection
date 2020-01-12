@@ -12,14 +12,18 @@ namespace Ofl.Reflection.Tests
             internal static object StaticInternalReadOnly { get; }
             internal static object StaticInternalWriteOnly { set { } }
 
+#pragma warning disable IDE0051 // Remove unused private members
             private static object StaticPrivateReadOnly { get; }
             private static object StaticPrivateWriteOnly { set { } }
+#pragma warning restore IDE0051 // Remove unused private members
 
             internal object InternalReadOnly { get; }
             internal object InternalWriteOnly { set { } }
 
+#pragma warning disable IDE0051 // Remove unused private members
             private object PrivateReadOnly { get; }
             private object PrivateWriteOnly { set { } }
+#pragma warning restore IDE0051 // Remove unused private members
 
             public static object StaticReadOnly { get; }
             public static object StaticWriteOnly { set { } }

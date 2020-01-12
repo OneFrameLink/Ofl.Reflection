@@ -14,7 +14,7 @@ namespace Ofl.Reflection
             if (expression == null) throw new ArgumentNullException(nameof(expression));
 
             // The member expression.
-            var member = expression.Body as MemberExpression;
+            MemberExpression? member = expression.Body as MemberExpression;
 
             // Used to generate the exception, if necessary.
             ArgumentException CreateExpressionNotPropertyException() =>
@@ -23,7 +23,7 @@ namespace Ofl.Reflection
             // If it's a convert, then get the expression in the convert.
             if (member == null && expression.Body.NodeType == ExpressionType.Convert)
                 // Get the convert.
-                member = (expression.Body as UnaryExpression).Operand as MemberExpression;
+                member = (expression.Body as UnaryExpression)?.Operand as MemberExpression;
 
             // If not a member expression, throw an exception.
             if (member == null)
@@ -38,8 +38,12 @@ namespace Ofl.Reflection
             return propertyInfo;
         }
 
-        public static PropertyInfo GetPropertyInfo<T, TProperty>(this T source, Expression<Func<T, TProperty>> expression) =>
-            expression.GetPropertyInfo();
+        public static PropertyInfo GetPropertyInfo<T, TProperty>(
+#pragma warning disable IDE0060 // Remove unused parameter
+            this T source,
+#pragma warning restore IDE0060 // Remove unused parameter
+            Expression<Func<T, TProperty>> expression
+        ) => expression.GetPropertyInfo();
 
         public static IEnumerable<PropertyInfo> GetPropertyInfos<T>(this T source,
             params Expression<Func<T, object>>[] expressions) =>

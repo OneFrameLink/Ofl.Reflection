@@ -5,14 +5,14 @@ using System.Reflection;
 
 namespace Ofl.Reflection
 {
-    public class PropertyPath
+    public abstract class PropertyPath
     {
         #region Constructor
 
-        internal PropertyPath() : this(null)
+        private PropertyPath() : this(null)
         { }
 
-        internal PropertyPath(PropertyPath root)
+        internal PropertyPath(PropertyPath? root)
         {
             // If the root is null, assign the path.
             if (root == null)
@@ -24,8 +24,18 @@ namespace Ofl.Reflection
                 Root = this;
             }
             else
+            {
+                // Set the path to null;
+                // calls to the path will always be
+                // not populated; either this is the
+                // root and it is populated 👆 or
+                // it is not the root, and
+                // the call is delegated to the root.
+                _path = null!;
+
                 // Root is root.
                 Root = root;
+            }
 
             // Root must not be null.
             Debug.Assert(Root != null);

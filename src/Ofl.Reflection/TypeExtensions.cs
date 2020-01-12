@@ -33,7 +33,6 @@ namespace Ofl.Reflection
             return type.GetRuntimeProperties().Where(p => p.GetMethod != null && !p.GetMethod.IsStatic && p.GetMethod.IsPublic);
         }
 
-
         public static bool IsAssignableFrom(this Type to, Type from)
         {
             // Validate parameters.

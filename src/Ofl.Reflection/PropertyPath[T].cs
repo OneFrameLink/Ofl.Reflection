@@ -12,7 +12,7 @@ namespace Ofl.Reflection
         internal PropertyPath() : base(null)
         { }
 
-        internal PropertyPath(PropertyPath root) : base(root)
+        private PropertyPath(PropertyPath root) : base(root)
         { }
 
         #endregion
